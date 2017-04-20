@@ -9,6 +9,7 @@ import scrapy
 
 
 class LagouJobPipeline(object):
+    collection_name = 'LagouJob'
 
     def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
@@ -29,9 +30,8 @@ class LagouJobPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        collection_name = item.__class__.__name__
-        if self.db[collection_name].find_one({'positionId': item['positionId']}):
+        if self.db[self.collection_name].find_one({'positionId': item['positionId']}):
             raise scrapy.exceptions.DropItem
         else:
-            self.db[collection_name].insert(dict(item))
+            self.db[self.collection_name].insert(dict(item))
             return item
