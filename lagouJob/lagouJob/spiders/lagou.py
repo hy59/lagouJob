@@ -13,7 +13,7 @@ class LagouSpider(scrapy.Spider):
     allowed_domains = ["www.lagou.com"]
 
     def __init__(self):
-        super().__init__()
+        super(LagouSpider, self).__init__()
         self.url = 'http://www.lagou.com/jobs/positionAjax.json'
         self.cookies = {
             'user_trace_token': '20170408172550-237840596dd94ae88b379b3791a8c469',
@@ -38,10 +38,10 @@ class LagouSpider(scrapy.Spider):
         jcontent = jdict["content"]
         jposresult = jcontent["positionResult"]
         self.pn = math.ceil(jposresult['totalCount'] / jposresult['resultSize'])
-        for n in range(2, self.pn + 1):
+        for n in range(2, int(self.pn) + 1):
             yield FormRequest(self.url, formdata={'first': 'false', 'pn': str(n), 'kd': 'python'},
                               callback=self.parse)
-        return self.parse(response)
+        yield self.parse(response)
 
     def parse(self, response):
         jdict = json.loads(response.text)
