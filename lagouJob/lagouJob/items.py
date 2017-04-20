@@ -14,6 +14,7 @@ class LagouJobItem(scrapy.Item):
     # name = scrapy.Field()
 
     positionId = Field()
+    positionName = Field()
     education = Field()
     city = Field()
     salary = Field()

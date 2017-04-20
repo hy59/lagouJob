@@ -59,6 +59,7 @@ class LagouSpider(scrapy.Spider):
         item = LagouJobItem()
         position = response.meta['position']
         item['positionId'] = position['positionId']
+        item['positionName'] = position['positionName']
         item['education'] = position['education']
         item['city'] = position['city']
         item['salary'] = position['salary']
